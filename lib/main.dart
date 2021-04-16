@@ -135,7 +135,12 @@ class MyApp extends StatelessWidget {
                   ),
                   TextField(
                     keyboardType: TextInputType.numberWithOptions(signed: true),
-                    inputFormatters: [ThousandsFormatter(allowNegative: true)],
+                    inputFormatters: [
+                      ThousandsFormatter(
+                        allowNegative: true,
+                        allowFraction: true,
+                      )
+                    ],
                   ),
                   SizedBox(
                     height: 32,

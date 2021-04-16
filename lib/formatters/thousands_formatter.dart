@@ -26,18 +26,23 @@ class ThousandsFormatter extends TextInputFormatter {
       oldValue,
       newValue,
       textInputFormatter: allowFraction
-          ? FilteringTextInputFormatter.allow(
-              RegExp('[0-9]+([$_decimalSeparator])?'))
-          : FilteringTextInputFormatter.allow(RegExp('[0-9-]+')),
+          ? (allowNegative
+              ? FilteringTextInputFormatter.allow(
+                  RegExp('[0-9-]+([$_decimalSeparator])?'))
+              : FilteringTextInputFormatter.allow(
+                  RegExp('[0-9]+([$_decimalSeparator])?')))
+          : (allowNegative
+              ? FilteringTextInputFormatter.allow(RegExp('[0-9-]+'))
+              : FilteringTextInputFormatter.digitsOnly),
       // because FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9]+')), does not work
       formatPattern: (String filteredString) {
         if (allowNegative) {
           // filter negative sign in the middle
           // this will also remove redundant negative signs
-          if ('-'.allMatches(filteredString).length > 1) {
-            filteredString = filteredString.startsWith('-')
-                ? '-'
-                : '' + filteredString.replaceAll('-', '');
+          if ('-'.allMatches(filteredString).length >= 1) {
+            filteredString = (filteredString.startsWith('-') ? '-' : '') +
+                filteredString.replaceAll('-', '');
+            print(filteredString);
           }
         }
 
@@ -60,19 +65,17 @@ class ThousandsFormatter extends TextInputFormatter {
 
         // Fix the -0. and similar issues
         if (allowNegative) {
-          if (filteredString.startsWith('-')) {
-            if (allowFraction) {
-              if (filteredString == '-' ||
-                  filteredString == '-0' ||
-                  filteredString == '-0.') {
-                return filteredString;
-              }
-            }
-            if (filteredString == '-') {
+          if (allowFraction) {
+            if (filteredString == '-' ||
+                filteredString == '-0' ||
+                filteredString == '-0.') {
               return filteredString;
             }
-            // TODO: Need to format again when focus leaves
           }
+          if (filteredString == '-') {
+            return filteredString;
+          }
+          // TODO: Need to format again when focus leaves
         }
 
         // Fix the .0 or .01 or .10 and similar issues
