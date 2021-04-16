@@ -35,6 +35,7 @@ class ThousandsFormatter extends TextInputFormatter {
               ? FilteringTextInputFormatter.allow(RegExp('[0-9-]+'))
               : FilteringTextInputFormatter.digitsOnly),
       // because FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9]+')), does not work
+      // https://github.com/flutter/flutter/issues/21874
       formatPattern: (String filteredString) {
         if (allowNegative) {
           // filter negative sign in the middle

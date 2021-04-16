@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:input_formatting_demo/formatters/credit_card_formatter.dart';
+import 'package:input_formatting_demo/formatters/currency_formatter.dart';
 import 'package:input_formatting_demo/formatters/telephone_number_formatter.dart';
 import 'package:input_formatting_demo/formatters/thousands_formatter.dart';
 
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
                       TelephoneNumberFormatter(),
                       LengthLimitingTextInputFormatter(
                           12), // 10 digits + 2 separators
+                      // UsNumberTextInputFormatter(),
                     ],
                   ),
                   SizedBox(
@@ -146,12 +148,12 @@ class MyApp extends StatelessWidget {
                     height: 32,
                   ),
                   Text(
-                    'Date format',
+                    'Currency value',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   TextField(
                     keyboardType: TextInputType.number,
-                    inputFormatters: [],
+                    inputFormatters: [CurrencyInputFormatter()],
                   ),
                   SizedBox(
                     height: 32,
